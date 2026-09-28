@@ -8,6 +8,11 @@
 # Force PHP 8.3 sur o2switch (inutile si le domaine est déjà en 8.3 via MultiPHP)
 AddHandler application/x-httpd-php83 .php
 
+# La page de l'outil. Le parent (pubtool/.htaccess) déclare « index.html » en
+# premier : sans cette ligne, /dshc/ dépendrait de l'ordre déclaré par le
+# parent. Ici l'outil tranche pour lui-même.
+DirectoryIndex index.php
+
 # ── Headers de sécurité ──────────────────────────────────
 <IfModule mod_headers.c>
   Header set X-Content-Type-Options "nosniff"

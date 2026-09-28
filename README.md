@@ -4,8 +4,8 @@ Petit outil web qui dit si l'API DeepSeek est **en heure creuse (off-peak, −50
 ou en heure pleine, et qui expose ça en **JSON** pour Home Assistant, un script ou
 une amie.
 
-- Page lisible : `https://pubtool.3dprintland.fr/DSHC/`
-- API : `https://pubtool.3dprintland.fr/DSHC/api.php`
+- Page lisible : `https://pubtool.3dprintland.fr/dshc/`
+- API : `https://pubtool.3dprintland.fr/dshc/api.php`
 
 Aucune base de données, aucune dépendance, aucun secret, aucune donnée collectée.
 Trois fichiers PHP suffisent (l'API est en lecture seule).
@@ -39,11 +39,14 @@ au lundi 01:00 UTC** (63 h).
    o2switch crée aussi l'enregistrement DNS A. Le certificat SSL est émis par
    AutoSSL — si le sous-domaine n'est pas couvert tout de suite : cPanel →
    **SSL/TLS Status** → *Run AutoSSL*.
-2. **File Manager** : créer `public_html/pubtool/DSHC`, y déposer
+2. **File Manager** : créer `public_html/pubtool/dshc`, y déposer
    `dshc.php`, `api.php`, `index.php`, `robots.txt`, puis renommer `htaccess`
    en `.htaccess` (avec le point).
-3. Tester : `https://pubtool.3dprintland.fr/DSHC/` et
-   `https://pubtool.3dprintland.fr/DSHC/api.php?format=text` → `offpeak` ou `peak`.
+   ⚠ Le `.htaccess` du dossier déclare `DirectoryIndex index.php` : c'est ce qui
+   fait répondre `/dshc/` (sans nom de fichier). Sans lui, le `.htaccess` parent
+   de `pubtool` ne cherche que `index.html` et `/dshc/` renvoie un 403.
+3. Tester : `https://pubtool.3dprintland.fr/dshc/` et
+   `https://pubtool.3dprintland.fr/dshc/api.php?format=text` → `offpeak` ou `peak`.
 
 Si le serveur déjà en PHP 8.3 (MultiPHP) renvoie une 500, commenter la ligne
 `AddHandler` du `.htaccess`.
@@ -90,7 +93,7 @@ sans risque par plusieurs consommateurs.
 
 ```yaml
 rest:
-  - resource: https://pubtool.3dprintland.fr/DSHC/api.php
+  - resource: https://pubtool.3dprintland.fr/dshc/api.php
     scan_interval: 60
     sensor:
       - name: "DeepSeek Tariff Status"       # conserve sensor.deepseek_tariff_status

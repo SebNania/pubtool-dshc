@@ -13,7 +13,7 @@ $stClass = $creuse ? 'ok' : 'warn';
 /* URL publique de l'API, calculée depuis la requête */
 $scheme  = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
 $baseUrl = $scheme . '://' . ($_SERVER['HTTP_HOST'] ?? 'localhost')
-         . rtrim(dirname($_SERVER['PHP_SELF'] ?? '/DSHC/index.php'), '/');
+         . rtrim(dirname($_SERVER['PHP_SELF'] ?? '/dshc/index.php'), '/');
 $apiUrl  = $baseUrl . '/api.php';
 
 $h = static fn (?string $s): string => htmlspecialchars((string) $s, ENT_QUOTES, 'UTF-8');
@@ -253,7 +253,7 @@ footer{color:var(--text2);font-size:.76rem;line-height:1.6;margin-top:24px;text-
           <td><?= $h($d['label']) ?></td>
           <td>
             <?php if ($d['type'] === 'holiday'): ?>
-              <span class="badge hl"><?= $h($d['holiday']['cn']) ?></span>
+              <span class="badge hl"><?= $h($d['holiday']['fr']) ?></span>
             <?php elseif ($d['type'] === 'weekend'): ?>
               <span class="badge we">week-end</span>
             <?php else: ?>

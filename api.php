@@ -2,12 +2,12 @@
 /**
  * DSHC — API JSON
  * ----------------------------------------------------------------------------
- *   GET /DSHC/api.php                    → état tarifaire maintenant (JSON)
- *   GET /DSHC/api.php?format=text        → "offpeak" ou "peak" (texte brut)
- *   GET /DSHC/api.php?at=2026-10-01T02:30Z   → état à un instant donné
- *   GET /DSHC/api.php?action=month&month=2026-10
- *   GET /DSHC/api.php?fields=state,next_change   (JSON réduit)
- *   GET /DSHC/api.php?key=XXXX           → si DS_API_KEY est définie
+ *   GET /dshc/api.php                    → état tarifaire maintenant (JSON)
+ *   GET /dshc/api.php?format=text        → "offpeak" ou "peak" (texte brut)
+ *   GET /dshc/api.php?at=2026-10-01T02:30Z   → état à un instant donné
+ *   GET /dshc/api.php?action=month&month=2026-10
+ *   GET /dshc/api.php?fields=state,next_change   (JSON réduit)
+ *   GET /dshc/api.php?key=XXXX           → si DS_API_KEY est définie
  *
  * Lecture seule. Aucune écriture, aucune base de données.
  */
