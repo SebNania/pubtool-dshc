@@ -1,0 +1,52 @@
+# DSHC — DeepSeek Heure Creuse
+# ⚠ Sur le serveur ce fichier doit s'appeler « .htaccess » (avec le point),
+#   d'où ce nom sans point dans le dépôt (un fichier nommé .htaccess est
+#   masqué par le Finder et avalé par certains clients FTP).
+#
+# Reprend le durcissement éprouvé du site bambutracker (audit 09/2026).
+
+# Force PHP 8.3 sur o2switch (inutile si le domaine est déjà en 8.3 via MultiPHP)
+AddHandler application/x-httpd-php83 .php
+
+# ── Headers de sécurité ──────────────────────────────────
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+  Header set Content-Security-Policy "frame-ancestors 'self'"
+  # Anti-indexation (convention des outils Printland) + HSTS
+  Header set X-Robots-Tag "noindex, nofollow"
+  Header always set Strict-Transport-Security "max-age=31536000"
+</IfModule>
+
+# Pas de listing de répertoires
+Options -Indexes
+
+# ── HTTPS obligatoire ────────────────────────────────────
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  # Les tests ne partent jamais sur le serveur : jamais accessibles non plus
+  RewriteRule ^tests?/ - [F,L]
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+</IfModule>
+
+# ── Cache ────────────────────────────────────────────────
+# La page doit toujours être fraîche (elle affiche un état qui change)…
+<FilesMatch "^index\.php$">
+  <IfModule mod_headers.c>
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+  </IfModule>
+</FilesMatch>
+# …mais api.php gère lui-même son Cache-Control (30 s), on n'y touche pas :
+# c'est ce qui limite le nombre de requêtes si l'outil est appelé souvent
+# (Home Assistant, amis, scripts).
+
+# ── Fichiers jamais servis ───────────────────────────────
+# Apache sert BRUT tout ce qui n'a pas l'extension .php (htaccess, README.md,
+# index.php.save, error_log…). dshc.php est une librairie interne : jamais
+# appelée directement.
+<FilesMatch "^(dshc)\.php$|^htaccess$|^README(.*)|\.(save|bak|old|orig|swp|log|sql|md|ini|sh|ya?ml|json|lock)$">
+  Require all denied
+</FilesMatch>

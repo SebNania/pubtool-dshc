@@ -1,0 +1,8 @@
+.DS_Store
+*.swp
+*~
+.idea/
+.vscode/
+# Le .htaccess serveur (renommé depuis « htaccess ») ne doit jamais revenir
+# dans le dépôt sous son nom d'origine avec un point :
+.htaccess
