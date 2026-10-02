@@ -16,6 +16,14 @@ $baseUrl = $scheme . '://' . ($_SERVER['HTTP_HOST'] ?? 'localhost')
          . rtrim(dirname($_SERVER['PHP_SELF'] ?? '/dshc/index.php'), '/');
 $apiUrl  = $baseUrl . '/api.php';
 
+/* URL publique réelle (jamais dérivée du Host de la requête) : sert au
+   canonical et à la carte de partage. */
+$canon   = DS_PUBLIC_BASE . '/';
+$ogImage = DS_PUBLIC_BASE . '/og.png';
+$icon    = DS_PUBLIC_BASE . '/icon.png';
+$favSvg  = DS_PUBLIC_BASE . '/favicon.svg';
+$favIco  = DS_PUBLIC_BASE . '/favicon.ico';
+
 $h = static fn (?string $s): string => htmlspecialchars((string) $s, ENT_QUOTES, 'UTF-8');
 
 /* Aperçu 14 jours */
@@ -43,7 +51,35 @@ for ($i = 0; $i < 14; $i++) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="robots" content="noindex, nofollow">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<meta name="author" content="Printland">
+<meta name="description" content="<?= $h(DS_OG_DESC) ?>">
+<meta name="theme-color" content="#f2f2f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="<?= $h($canon) ?>">
+<!-- Icône d'onglet : SVG pour les navigateurs modernes, .ico (16.32.48) en
+     secours universel, PNG 180 pour l'écran d'accueil iOS/Android. -->
+<link rel="icon" type="image/svg+xml" href="<?= $h($favSvg) ?>">
+<link rel="icon" href="<?= $h($favIco) ?>" sizes="any">
+<link rel="apple-touch-icon" sizes="180x180" href="<?= $h($icon) ?>">
+<!-- Carte de partage (Facebook, WhatsApp, X, Telegram, Slack, Discord, LinkedIn).
+     Les robots de ces plateformes sont autorisés dans robots.txt ; les moteurs
+     de recherche restent exclus (pas de référencement de l'outil). -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Printland">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:url" content="<?= $h($canon) ?>">
+<meta property="og:title" content="<?= $h(DS_OG_TITLE) ?>">
+<meta property="og:description" content="<?= $h(DS_OG_DESC) ?>">
+<meta property="og:image" content="<?= $h($ogImage) ?>">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="DeepSeek : heure creuse (−50 %) ou heure pleine (×2) ?">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="<?= $h(DS_OG_TITLE) ?>">
+<meta name="twitter:description" content="<?= $h(DS_OG_DESC) ?>">
+<meta name="twitter:image" content="<?= $h($ogImage) ?>">
 <title><?= $h(DS_TITLE) ?></title>
 <style>
 :root{

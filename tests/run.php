@@ -224,5 +224,24 @@ check('ds_human(225000)',  ds_human(225000), '2 j 14 h');
 check('jours FR',          ds_day_name(3), 'mercredi');
 check('fenêtres en minutes', ds_windows_minutes(), [[60, 240], [360, 600]]);
 
+printf("\n=== 13. ?action=month : bornes ===\n");
+check('2026-10 → 31 jours',          count(ds_month('2026-10')), 31);
+check('2026-10 → 1er jour',          ds_month('2026-10')[0]['date'], '2026-10-01');
+check('2026-02 → 28 jours (non bissextile)', count(ds_month('2026-02')), 28);
+check('2028-02 → 29 jours (bissextile)',     count(ds_month('2028-02')), 29);
+check('mois 13 refusé',              ds_month('2026-13'), []);
+check('mois 00 refusé',              ds_month('2026-00'), []);
+check('mois 99 refusé',              ds_month('9999-99'), []);
+check('année 1969 refusée',          ds_month('1969-01'), []);
+check('format libre refusé',         ds_month('abc'), []);
+check('format court refusé',         ds_month('2026-1'), []);
+$mk = ds_month('2026-10');
+$bad = array_filter($mk, static fn (array $d): bool => $d['weekday'] === '' || !preg_match('/^\d{4}-\d{2}-\d{2}$/', $d['date']));
+check('aucun jour invalide sur 2026-10', count($bad), 0);
+check('2026-10-31 = samedi',         $mk[30]['weekday'], 'samedi');
+check('2026-10-31 = week-end',       $mk[30]['type'], 'weekend');
+check('2026-10-01 = jeudi, férié chinois (Fête nationale)', $mk[0]['type'], 'holiday');
+check('2026-10-09 = vendredi ouvré',  $mk[8]['type'], 'workday');
+
 printf("\n──────────────────────────────────────────\n%d vérifications, %d échec(s)\n\n", $GLOBALS['n'], $GLOBALS['fail']);
 exit($GLOBALS['fail'] === 0 ? 0 : 1);

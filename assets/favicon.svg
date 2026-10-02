@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="DeepSeek heure creuse">
+  <defs>
+    <radialGradient id="g" cx="74%" cy="8%" r="120%">
+      <stop offset="0%" stop-color="#14452f"/>
+      <stop offset="58%" stop-color="#101012"/>
+      <stop offset="100%" stop-color="#0a0a0b"/>
+    </radialGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#g)"/>
+  <!-- « % » géométrique : deux pastilles pleines + une barre épaisse.
+       Une police serait illisible à 16 px (cercles creux bouchés). -->
+  <circle cx="22" cy="21" r="9.5" fill="#30d158"/>
+  <circle cx="42" cy="43" r="9.5" fill="#30d158"/>
+  <path d="M46 13 L18 51" stroke="#30d158" stroke-width="8" stroke-linecap="butt"/>
+</svg>

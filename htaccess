@@ -18,8 +18,12 @@ DirectoryIndex index.php
   Header set X-Content-Type-Options "nosniff"
   Header set Referrer-Policy "strict-origin-when-cross-origin"
   Header set Content-Security-Policy "frame-ancestors 'self'"
-  # Anti-indexation (convention des outils Printland) + HSTS
-  Header set X-Robots-Tag "noindex, nofollow"
+  # Indexation : cet outil est PUBLIC (le robots.txt racine l'autorise, il est
+  # aussi là pour être partagé et trouvé). Le .htaccess PARENT de pubtool pose
+  # un X-Robots-Tag « noindex, nofollow » qui descend sur tout le sous-arbre :
+  # sans ce « unset », Google répondrait « Explorée, non indexée » et la Search
+  # Console annoncerait l'outil bloqué. Ne pas « nettoyer » cette ligne.
+  Header unset X-Robots-Tag
   Header always set Strict-Transport-Security "max-age=31536000"
 </IfModule>
 

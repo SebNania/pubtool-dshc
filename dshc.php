@@ -23,6 +23,19 @@ declare(strict_types=1);
 /** Titre affiché sur la page. */
 const DS_TITLE = 'DeepSeek — Heure creuse';
 
+/** URL publique canonique de l'outil (balises canonical + og:).
+ *  Écrite en dur volontairement : un en-tête « Host » falsifié ne doit pas
+ *  pouvoir faire pointer la carte de partage vers un autre domaine. */
+const DS_PUBLIC_BASE = 'https://pubtool.3dprintland.fr/dshc';
+
+/** Titre + description de la carte de partage (balises og:). Statiques à
+ *  dessein : Facebook garde la carte en cache ~7 jours, une description
+ *  « état en direct » y serait périmée une fois sur deux. */
+const DS_OG_TITLE = 'DeepSeek : heure creuse ou heure pleine ?';
+const DS_OG_DESC  = "Les mêmes tokens coûtent deux fois moins cher hors des plages de pointe "
+                  . "(01:00-04:00 et 06:00-10:00 UTC, du lundi au vendredi) — week-ends et fériés "
+                  . "chinois compris dans l'heure creuse. État en direct et prochaine bascule.";
+
 /** Clé d'API facultative. '' = API publique (aucune authentification).
  *  Sinon : ?key=... ou en-tête X-API-Key. */
 const DS_API_KEY = '';
@@ -422,9 +435,15 @@ function ds_month(string $ym): array
     if (!preg_match('/^(\d{4})-(\d{2})$/', $ym, $m)) {
         return [];
     }
-    $y = (int) $m[1];
+    $y  = (int) $m[1];
     $mo = (int) $m[2];
-    $days = (int) date('t', mktime(0, 0, 0, $mo, 1, $y));
+    /* Bornes obligatoires : un mois hors 01-12 (ou une année absurde) produit
+       une date invalide ; strtotime() renvoie alors false et date() lève un
+       TypeError sous strict_types → HTTP 500 sur une API publique. */
+    if ($mo < 1 || $mo > 12 || $y < 1970 || $y > 2100) {
+        return [];
+    }
+    $days = (int) gmdate('t', gmmktime(0, 0, 0, $mo, 1, $y));
     $idx  = ds_holiday_index();
     $out  = [];
     for ($d = 1; $d <= $days; $d++) {
@@ -432,7 +451,7 @@ function ds_month(string $ym): array
         $mk = ds_makeup_index()[$utcDate] ?? false;
         // date de Pékin = date UTC (les deux plages UTC tombent le même jour CST)
         $holi = $idx[$utcDate] ?? null;
-        $iso  = (int) date('N', strtotime($utcDate . ' 12:00:00 UTC'));
+        $iso  = (int) gmdate('N', gmmktime(12, 0, 0, $mo, $d, $y));
         $type = $holi !== null ? 'holiday' : (($iso >= 6 && !(DS_MAKEUP_PEAK && $mk)) ? 'weekend' : 'workday');
         $peak = [];
         foreach (DS_WINDOWS as $w) {

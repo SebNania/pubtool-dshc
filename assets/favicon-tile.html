@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>DSHC — tuile favicon (16 / 32 / 48)</title>
+<style>
+  /* Le « % » est dessiné en géométrie (SVG : cercles PLEINS + barre épaisse),
+     pas composé avec une police — les cercles creux d'un glyphe de police se
+     bouchent en dessous de 32 px et l'onglet n'est plus qu'une tache verte. */
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:100%;height:100%;overflow:hidden}
+  body{background:#000}
+  .tile{
+    display:block;width:100%;height:100%;border-radius:22vmin;
+    background:radial-gradient(120% 120% at 74% 8%,#14452f 0%,#101012 58%,#0a0a0b 100%);
+  }
+</style>
+</head>
+<body>
+<svg class="tile" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="22" cy="21" r="9.5" fill="#30d158"/>
+  <circle cx="42" cy="43" r="9.5" fill="#30d158"/>
+  <path d="M46 13 L18 51" stroke="#30d158" stroke-width="8" stroke-linecap="butt"/>
+</svg>
+</body>
+</html>

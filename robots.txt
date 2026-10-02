@@ -1,2 +1,20 @@
+# DSHC — robots.txt (copie de cohérence)
+# ---------------------------------------------------------------------------
+# Ce fichier n'est PAS celui que les robots lisent : le protocole robots.txt ne
+# consulte que /robots.txt à la racine de l'hôte, soit
+# https://pubtool.3dprintland.fr/robots.txt (déployé depuis le dépôt
+# o2switch-docroots/pubtool/). Il est conservé identique pour éviter la
+# confusion lors d'un déploiement manuel.
+#
+# Politique en place depuis le 02/10/2026 :
+#   - l'outil est indexable (Google, Bing) et partageable (les robots d'aperçu
+#     — facebookexternalhit, Twitterbot, WhatsApp, TelegramBot, Slackbot,
+#     Discordbot, LinkedInBot, Applebot — sont autorisés par défaut) ;
+#   - seuls l'API JSON et la page d'accueil du sous-domaine restent exclus.
+
 User-agent: *
-Disallow: /
+Allow: /
+Disallow: /dshc/api.php
+Disallow: /index.html
+
+Sitemap: https://pubtool.3dprintland.fr/sitemap.xml

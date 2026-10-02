@@ -6,3 +6,5 @@
 # Le .htaccess serveur (renommé depuis « htaccess ») ne doit jamais revenir
 # dans le dépôt sous son nom d'origine avec un point :
 .htaccess
+# Rendus intermédiaires du générateur d'images (assets/render_og.py)
+assets/.build/

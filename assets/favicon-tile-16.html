@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>DSHC — tuile favicon 16 px (grille pixel)</title>
+<style>
+  /* Version 16×16 au PIXEL : coordonnées entières + crispEdges. À cette taille,
+     tout dessin vectoriel « joli » se fait dévorer par l'anti-aliasing — les
+     seules formes nettes sont celles qui tombent pile sur la grille. */
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:100%;height:100%;overflow:hidden;background:#000}
+  .tile{display:block;width:100%;height:100%}
+</style>
+</head>
+<body>
+<svg class="tile" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+  <rect width="16" height="16" rx="3.5" fill="#0f1011"/>
+  <path d="M11 4 L5 12" stroke="#30d158" stroke-width="2"/>
+  <circle cx="5.5" cy="4.5" r="2" fill="#30d158"/>
+  <circle cx="10.5" cy="11.5" r="2" fill="#30d158"/>
+</svg>
+</body>
+</html>
