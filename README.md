@@ -264,3 +264,13 @@ consécutives, prochaines bascules (dont le trou de 63 h du vendredi au lundi),
 contrat de la charge utile, analyse de `?at=`, et bornes de `?action=month`
 (un mois hors 01-12 renvoyait un HTTP 500 avant le correctif du 02/10/2026 —
 `ds_month()` borne désormais le mois et l'année avant tout calcul de date).
+
+## Licence
+
+MIT — voir [`LICENSE`](LICENSE). Réutilisation libre, y compris commerciale, à
+seule condition de conserver la mention de copyright.
+
+L'outil est fourni **en l'état, sans garantie** : il affiche un barème publié par
+DeepSeek, susceptible de changer sans préavis. La veille quotidienne décrite plus
+haut surveille ce barème, mais l'outil reste un indicateur, jamais une source de
+facturation.
